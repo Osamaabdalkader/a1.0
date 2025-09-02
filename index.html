@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة تسريع المبيعات</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+</head>
+<body>
+    <header>
+        <h1>منصة تسريع المبيعات</h1>
+        <nav>
+            <a href="index.html" class="active">الرئيسية</a>
+            <a href="create.html">إنشاء إعلان</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <h2>المنتجات المتاحة</h2>
+            <div id="products-container" class="products-grid">
+                <!-- سيتم ملء هذا القسم بالمنتجات من Firebase -->
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2023 منصة تسريع المبيعات. جميع الحقوق محفوظة.</p>
+    </footer>
+
+    <script src="firebase-config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

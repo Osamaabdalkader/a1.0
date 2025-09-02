@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إنشاء إعلان جديد</title>
+    <link rel="stylesheet" href="create-style.css">
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+</head>
+<body>
+    <header>
+        <h1>منصة تسريع المبيعات</h1>
+        <nav>
+            <a href="index.html">الرئيسية</a>
+            <a href="create.html" class="active">إنشاء إعلان</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <h2>إنشاء إعلان جديد</h2>
+            <form id="product-form" class="product-form">
+                <div class="form-group">
+                    <label for="title">عنوان المنتج</label>
+                    <input type="text" id="title" required placeholder="أدخل عنوان المنتج">
+                </div>
+                
+                <div class="form-group">
+                    <label for="description">وصف المنتج</label>
+                    <textarea id="description" rows="4" required placeholder="أدخل وصفاً للمنتج"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="price">السعر (ريال سعودي)</label>
+                    <input type="number" id="price" required placeholder="أدخل السعر">
+                </div>
+                
+                <div class="form-group">
+                    <label for="location">الموقع</label>
+                    <input type="text" id="location" required placeholder="أدخل موقعك">
+                </div>
+                
+                <button type="submit" class="submit-btn">نشر الإعلان</button>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2023 منصة تسريع المبيعات. جميع الحقوق محفوظة.</p>
+    </footer>
+
+    <script src="firebase-config.js"></script>
+    <script src="create-app.js"></script>
+</body>
+</html>
