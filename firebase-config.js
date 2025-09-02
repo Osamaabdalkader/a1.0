@@ -11,11 +11,13 @@ const firebaseConfig = {
 };
 
 // تهيئة Firebase
-firebase.initializeApp(firebaseConfig);
+try {
+    firebase.initializeApp(firebaseConfig);
+    console.log("Firebase initialized successfully");
+} catch (error) {
+    console.error("Firebase initialization error:", error);
+    alert("حدث خطأ في تهيئة Firebase. يرجى التحقق من التكوين.");
+}
 
-// التأكد من تهيئة الخدمات بشكل صحيح
 const database = firebase.database();
-const storage = firebase.storage(); // هذا السطر مهم
-
-// للتأكد من أن التهيئة تمت بنجاح
-console.log("Firebase initialized successfully");
+const storage = firebase.storage();
