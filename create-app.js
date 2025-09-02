@@ -11,6 +11,14 @@ const submitBtn = document.querySelector('.submit-btn');
 imageInput.addEventListener('change', function() {
     const file = this.files[0];
     if (file) {
+        // التحقق من حجم الصورة (5MB كحد أقصى)
+        const maxSize = 5 * 1024 * 1024;
+        if (file.size > maxSize) {
+            alert('حجم الصورة كبير جداً. الحد الأقصى هو 5MB');
+            this.value = '';
+            return;
+        }
+
         const reader = new FileReader();
         reader.onload = function(e) {
             previewImg.src = e.target.result;
@@ -28,6 +36,7 @@ productForm.addEventListener('submit', async (e) => {
     
     // تعطيل الزر أثناء التحميل
     submitBtn.disabled = true;
+    submitBtn.textContent = 'جاري النشر...';
     
     // الحصول على القيم من النموذج
     const title = document.getElementById('title').value;
@@ -61,55 +70,71 @@ productForm.addEventListener('submit', async (e) => {
                 (error) => {
                     console.error('Error uploading image:', error);
                     alert('حدث خطأ أثناء رفع الصورة. يرجى المحاولة مرة أخرى.');
-                    submitBtn.disabled = false;
-                    uploadProgress.style.display = 'none';
+                    resetForm();
                 },
                 async () => {
-                    // الرفع اكتمل بنجاح، الحصول على رابط التنزيل
-                    imageUrl = await uploadTask.snapshot.ref.getDownloadURL();
-                    
-                    // حفظ البيانات في Realtime Database
-                    saveProductData(title, description, price, location, imageUrl);
+                    try {
+                        // الرفع اكتمل بنجاح، الحصول على رابط التنزيل
+                        imageUrl = await uploadTask.snapshot.ref.getDownloadURL();
+                        console.log('Image uploaded successfully:', imageUrl);
+                        
+                        // حفظ البيانات في Realtime Database
+                        await saveProductData(title, description, price, location, imageUrl);
+                    } catch (error) {
+                        console.error('Error getting download URL:', error);
+                        alert('حدث خطأ أثناء الحصول على رابط الصورة.');
+                        resetForm();
+                    }
                 }
             );
         } catch (error) {
             console.error('Error uploading image:', error);
             alert('حدث خطأ أثناء رفع الصورة. يرجى المحاولة مرة أخرى.');
-            submitBtn.disabled = false;
-            uploadProgress.style.display = 'none';
+            resetForm();
         }
     } else {
         // إذا لم يتم تحميل صورة، احفظ البيانات فقط
-        saveProductData(title, description, price, location, imageUrl);
+        try {
+            await saveProductData(title, description, price, location, imageUrl);
+        } catch (error) {
+            console.error('Error saving product:', error);
+            alert('حدث خطأ أثناء حفظ البيانات.');
+            resetForm();
+        }
     }
 });
 
 // دالة لحفظ بيانات المنتج في Firebase
-function saveProductData(title, description, price, location, imageUrl) {
-    // إنشاء مرجع للمنتجات
-    const productsRef = database.ref('products');
-    
-    // إضافة المنتج إلى Firebase
-    const newProductRef = productsRef.push();
-    newProductRef.set({
-        title: title,
-        description: description,
-        price: price,
-        location: location,
-        imageUrl: imageUrl,
-        createdAt: firebase.database.ServerValue.TIMESTAMP
-    })
-    .then(() => {
+async function saveProductData(title, description, price, location, imageUrl) {
+    try {
+        // إنشاء مرجع للمنتجات
+        const productsRef = database.ref('products');
+        
+        // إضافة المنتج إلى Firebase
+        const newProductRef = productsRef.push();
+        await newProductRef.set({
+            title: title,
+            description: description,
+            price: price,
+            location: location,
+            imageUrl: imageUrl,
+            createdAt: firebase.database.ServerValue.TIMESTAMP
+        });
+        
         alert('تم نشر الإعلان بنجاح!');
-        productForm.reset();
-        imagePreview.style.display = 'none';
-        uploadProgress.style.display = 'none';
-        submitBtn.disabled = false;
-    })
-    .catch((error) => {
-        console.error('Error adding product:', error);
-        alert('حدث خطأ أثناء نشر الإعلان. يرجى المحاولة مرة أخرى.');
-        submitBtn.disabled = false;
-        uploadProgress.style.display = 'none';
-    });
+        resetForm();
+    } catch (error) {
+        console.error('Error saving product data:', error);
+        throw error;
+    }
 }
+
+// دالة لإعادة تعيين النموذج
+function resetForm() {
+    productForm.reset();
+    imagePreview.style.display = 'none';
+    uploadProgress.style.display = 'none';
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'نشر الإعلان';
+    progressBar.style.width = '0%';
+                }
