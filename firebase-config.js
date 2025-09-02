@@ -12,5 +12,10 @@ const firebaseConfig = {
 
 // تهيئة Firebase
 firebase.initializeApp(firebaseConfig);
+
+// التأكد من تهيئة الخدمات بشكل صحيح
 const database = firebase.database();
-const storage = firebase.storage();
+const storage = firebase.storage(); // هذا السطر مهم
+
+// للتأكد من أن التهيئة تمت بنجاح
+console.log("Firebase initialized successfully");
