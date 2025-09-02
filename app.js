@@ -13,8 +13,13 @@ productsRef.on('value', (snapshot) => {
             const productCard = document.createElement('div');
             productCard.className = 'product-card';
             
+            // عرض الصورة إذا كانت متاحة
+            const imageElement = product.imageUrl 
+                ? `<img src="${product.imageUrl}" alt="${product.title}" onerror="this.style.display='none'; this.parentNode.innerHTML='صورة المنتج';">`
+                : 'صورة المنتج';
+            
             productCard.innerHTML = `
-                <div class="product-image">صورة المنتج</div>
+                <div class="product-image">${imageElement}</div>
                 <div class="product-info">
                     <h3 class="product-title">${product.title || 'لا يوجد عنوان'}</h3>
                     <p class="product-price">السعر: ${product.price || 'غير محدد'} ر.س</p>

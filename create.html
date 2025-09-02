@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="create-style.css">
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
 </head>
 <body>
     <header>
@@ -40,8 +41,19 @@
                     <label for="location">الموقع</label>
                     <input type="text" id="location" required placeholder="أدخل موقعك">
                 </div>
+
+                <div class="form-group">
+                    <label for="image">صورة المنتج (اختياري)</label>
+                    <input type="file" id="image" accept="image/*">
+                    <div class="image-preview" id="image-preview" style="display: none;">
+                        <img id="preview-img" src="#" alt="معاينة الصورة">
+                    </div>
+                </div>
                 
                 <button type="submit" class="submit-btn">نشر الإعلان</button>
+                <div id="upload-progress" class="progress-bar" style="display: none;">
+                    <div class="progress"></div>
+                </div>
             </form>
         </div>
     </main>

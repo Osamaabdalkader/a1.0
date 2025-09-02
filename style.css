@@ -79,6 +79,13 @@ h2 {
     align-items: center;
     justify-content: center;
     color: #888;
+    overflow: hidden;
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .product-info {
@@ -108,6 +115,13 @@ h2 {
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
+}
+
+.no-products {
+    text-align: center;
+    grid-column: 1 / -1;
+    padding: 2rem;
+    color: #666;
 }
 
 footer {
